@@ -1,0 +1,5 @@
+{
+  "name": "LuminaStudy AI",
+  "description": "An intelligent study planner that uses Google Gemini AI to generate personalized schedules, track deadlines, and optimize student productivity with professional role-based features.",
+  "requestFramePermissions": []
+}
