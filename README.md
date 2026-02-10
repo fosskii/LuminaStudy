@@ -1,20 +1,27 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
 
-# Run and deploy your AI Studio app
+# LuminaStudy AI 🎓
 
-This contains everything you need to run your app locally.
+An intelligent study planner that uses Google Gemini AI to generate personalized schedules, track deadlines, and optimize student productivity.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1YXqi9McC8wWOkKjCS7g_3vkdlKksuNLs
+## 🚀 Deployment on Vercel
 
-## Run Locally
+1. **Push to GitHub**: Push this code to a GitHub repository.
+2. **Import to Vercel**: Go to [vercel.com](https://vercel.com) and import your repository.
+3. **Configure Environment Variables**:
+   - In the Vercel project settings, go to **Environment Variables**.
+   - Add a new variable named `API_KEY`.
+   - Paste your Google Gemini API key as the value.
+4. **Deploy**: Vercel will automatically detect the static setup and deploy your site.
 
-**Prerequisites:**  Node.js
+## 🔑 Environment Variables
 
+The app requires the following environment variable to function:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- `API_KEY`: Your Google Generative AI API Key.
+
+## 🛠 Features
+
+- **AI Assistant**: Generates balanced 7-day study plans.
+- **Planner**: Manage tasks, subjects, and deadlines.
+- **Role-Based Access**: Specialized views for Admin and Moderator roles.
+- **Persistence**: All data is saved locally for seamless usage.
