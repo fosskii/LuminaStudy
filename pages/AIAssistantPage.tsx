@@ -14,7 +14,6 @@ const AIAssistantPage: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
 
-  // Fix: Explicitly cast the unique subjects list to string[] to resolve type inference issues with Set and Array.from
   const subjects = Array.from(new Set(tasks.map(t => t.subject))) as string[];
 
   const handleGenerate = async () => {
@@ -27,10 +26,11 @@ const AIAssistantPage: React.FC = () => {
     setError('');
     
     try {
-      const planBlocks = await generateStudyPlan(subjects, availableHours, tasks, additionalNotes);
+      // Pass the user's email to the service for server-side verification
+      const planBlocks = await generateStudyPlan(subjects, availableHours, tasks, additionalNotes, user?.email);
       setPlan(planBlocks);
     } catch (err: any) {
-      setError(err.message || "Failed to connect to AI. Check API Key configuration.");
+      setError(err.message || "Failed to connect to AI server. Check Vercel logs.");
     } finally {
       setIsGenerating(false);
     }
@@ -103,7 +103,7 @@ const AIAssistantPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Special Considerations</label>
                   <textarea
-                    placeholder="e.g., Focus more on Calculus on weekends, I have a big exam on Friday..."
+                    placeholder="e.g., Focus more on Calculus on weekends..."
                     rows={4}
                     value={additionalNotes}
                     onChange={(e) => setAdditionalNotes(e.target.value)}
@@ -142,27 +142,11 @@ const AIAssistantPage: React.FC = () => {
           <div className="space-y-6">
             <div className="bg-indigo-900 p-8 rounded-3xl text-white shadow-xl shadow-indigo-100 relative overflow-hidden">
               <Sparkles className="absolute top-4 right-4 h-12 w-12 text-white/10" />
-              <h3 className="text-xl font-bold mb-4">Why use AI?</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <div className="p-1 bg-white/20 rounded-lg mr-3 mt-1">
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
-                  <p className="text-sm text-indigo-100">Optimizes your mental load by balancing easy and hard subjects.</p>
-                </li>
-                <li className="flex items-start">
-                  <div className="p-1 bg-white/20 rounded-lg mr-3 mt-1">
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
-                  <p className="text-sm text-indigo-100">Ensures all deadlines are met without last-minute cramming.</p>
-                </li>
-                <li className="flex items-start">
-                  <div className="p-1 bg-white/20 rounded-lg mr-3 mt-1">
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
-                  <p className="text-sm text-indigo-100">Tailors time blocks based on your personal energy levels.</p>
-                </li>
-              </ul>
+              <h3 className="text-xl font-bold mb-4">Secure AI</h3>
+              <p className="text-sm text-indigo-100 leading-relaxed">
+                Your study plans are now generated using Vercel Serverless Functions. 
+                This ensures high-speed delivery and enterprise-grade security for your data.
+              </p>
             </div>
           </div>
         </div>

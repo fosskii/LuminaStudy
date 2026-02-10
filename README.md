@@ -3,25 +3,30 @@
 
 An intelligent study planner that uses Google Gemini AI to generate personalized schedules, track deadlines, and optimize student productivity.
 
-## 🚀 Deployment on Vercel
+## 🚀 Production Deployment (Vercel)
 
-1. **Push to GitHub**: Push this code to a GitHub repository.
-2. **Import to Vercel**: Go to [vercel.com](https://vercel.com) and import your repository.
-3. **Configure Environment Variables**:
-   - In the Vercel project settings, go to **Environment Variables**.
-   - Add a new variable named `API_KEY`.
-   - Paste your Google Gemini API key as the value.
-4. **Deploy**: Vercel will automatically detect the static setup and deploy your site.
+This application is configured for secure deployment using Vercel Serverless Functions to hide API secrets.
 
-## 🔑 Environment Variables
+### Step 1: Push to Git
+Push this codebase to your GitHub, GitLab, or Bitbucket repository.
 
-The app requires the following environment variable to function:
+### Step 2: Import to Vercel
+1. Log in to [Vercel](https://vercel.com).
+2. Click **Add New** > **Project**.
+3. Import your repository.
 
-- `API_KEY`: Your Google Generative AI API Key.
+### Step 3: Configure Environment Variables
+In the Vercel Dashboard, go to **Project Settings** > **Environment Variables** and add:
+- `API_KEY`: Your Google Gemini API Key. (Get it at [aistudio.google.com](https://aistudio.google.com/app/apikey))
+
+### Step 4: Deploy
+Click **Deploy**. Vercel will build the frontend and the `/api` routes automatically.
+
+## 🔒 Security Features
+- **Serverless API Proxy**: The `API_KEY` is only available to the `/api/generate-plan` route and is never exposed to the client browser.
+- **Edge Runtime**: API routes use the Vercel Edge Runtime for lower latency and better global performance.
 
 ## 🛠 Features
-
-- **AI Assistant**: Generates balanced 7-day study plans.
-- **Planner**: Manage tasks, subjects, and deadlines.
+- **AI Assistant**: Generates balanced 7-day study plans via secure backend.
+- **Planner**: Manage tasks, subjects, and deadlines with local persistence.
 - **Role-Based Access**: Specialized views for Admin and Moderator roles.
-- **Persistence**: All data is saved locally for seamless usage.
