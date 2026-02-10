@@ -17,6 +17,7 @@ export default async function handler(req: Request) {
       return new Response(JSON.stringify({ error: 'Server configuration error: Missing API Key' }), { status: 500 });
     }
 
+    // Always use named parameter for apiKey
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const prompt = `
@@ -30,8 +31,9 @@ export default async function handler(req: Request) {
       { day, startTime, endTime, subject, topic, durationMinutes }
     `;
 
+    // Use gemini-3-pro-preview for complex reasoning and planning tasks
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3-pro-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -59,6 +61,10 @@ export default async function handler(req: Request) {
     });
 
     const text = response.text;
+    if (!text) {
+      throw new Error("The AI model returned an empty response.");
+    }
+
     return new Response(text, {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

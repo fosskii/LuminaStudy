@@ -52,9 +52,12 @@ const ErrorFallback = () => (
   </div>
 );
 
-// Fix: Use class property for state and ensure visibility for TS compiler to resolve 'state' and 'props' access errors
+// Fix: Added explicit constructor to resolve 'props' visibility issues for the TS compiler
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
-  public state = { hasError: false };
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
   static getDerivedStateFromError() { 
     return { hasError: true }; 

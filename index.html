@@ -14,37 +14,48 @@
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      -webkit-font-smoothing: antialiased;
+      background: #f9fafb;
     }
     #root:empty {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background: #f9fafb;
     }
-    #root:empty::after {
-      content: "Initializing LuminaStudy...";
-      font-weight: 500;
-      color: #6366f1;
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(99, 102, 241, 0.1);
+      border-left-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 <script type="importmap">
 {
   "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.11.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
   }
 }
 </script>
 </head>
 <body class="bg-gray-50 text-gray-900">
-  <div id="root"></div>
-  <!-- Production Entry Point -->
-  <script type="module" src="./index.tsx"></script>
+  <div id="root">
+    <div class="spinner"></div>
+    <p style="color: #6366f1; font-weight: 500;">Initializing LuminaStudy AI...</p>
+  </div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
