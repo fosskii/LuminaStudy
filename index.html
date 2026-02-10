@@ -12,6 +12,21 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    #root:empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f9fafb;
+    }
+    #root:empty::after {
+      content: "Initializing LuminaStudy...";
+      font-weight: 500;
+      color: #6366f1;
     }
   </style>
 <script type="importmap">
@@ -29,5 +44,7 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
   <div id="root"></div>
+  <!-- Production Entry Point -->
+  <script type="module" src="./index.tsx"></script>
 </body>
 </html>

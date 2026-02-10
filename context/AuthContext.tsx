@@ -40,30 +40,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedAllUsers = localStorage.getItem('lumina_all_users');
-    const initialUsers = savedAllUsers ? JSON.parse(savedAllUsers) : INITIAL_USERS;
-    setAllUsers(initialUsers);
+    const initializeAuth = () => {
+      try {
+        const savedAllUsers = localStorage.getItem('lumina_all_users');
+        const initialUsers = savedAllUsers ? JSON.parse(savedAllUsers) : INITIAL_USERS;
+        setAllUsers(Array.isArray(initialUsers) ? initialUsers : INITIAL_USERS);
 
-    const savedCurrentUser = localStorage.getItem('lumina_user');
-    if (savedCurrentUser) {
-      const parsed = JSON.parse(savedCurrentUser);
-      // Ensure current user data is synced with the "allUsers" db
-      const syncedUser = initialUsers.find((u: User) => u.email === parsed.email);
-      if (syncedUser) {
-        if (syncedUser.status === 'disabled') {
-          localStorage.removeItem('lumina_user');
-          setUser(null);
-        } else {
-          setUser(syncedUser);
+        const savedCurrentUser = localStorage.getItem('lumina_user');
+        if (savedCurrentUser) {
+          const parsed = JSON.parse(savedCurrentUser);
+          // Sync with the allUsers array
+          const syncedUser = (Array.isArray(initialUsers) ? initialUsers : INITIAL_USERS).find((u: User) => u.email === parsed.email);
+          if (syncedUser) {
+            if (syncedUser.status === 'disabled') {
+              localStorage.removeItem('lumina_user');
+              setUser(null);
+            } else {
+              setUser(syncedUser);
+            }
+          }
         }
+      } catch (err) {
+        console.error("Auth hydration failed:", err);
+        // Fallback to initial state
+        setAllUsers(INITIAL_USERS);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   useEffect(() => {
     if (!loading) {
-      localStorage.setItem('lumina_all_users', JSON.stringify(allUsers));
+      try {
+        localStorage.setItem('lumina_all_users', JSON.stringify(allUsers));
+      } catch (err) {
+        console.error("Failed to persist users:", err);
+      }
     }
   }, [allUsers, loading]);
 
@@ -78,7 +93,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(existingUser);
       localStorage.setItem('lumina_user', JSON.stringify(existingUser));
     } else {
-      // Auto-register for demo purposes if not in INITIAL_USERS but matches specific emails
       const role = determineRoleFromEmail(email);
       const newUser: User = {
         id: `user-${Date.now()}`,
@@ -145,7 +159,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Admin/Moderator Methods
   const updateUserRole = async (userId: string, newRole: UserRole) => {
     if (user?.role !== UserRole.ADMIN) throw new Error('Unauthorized');
     setAllUsers(prev => prev.map(u => u.id === userId ? { ...u, role: newRole } : u));
